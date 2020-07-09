@@ -1,6 +1,24 @@
 # docker-example
 A docker-containerized web app that identifies offensive speech.
 
+## Getting Started
+
+Run frontend docker container
+
+    docker run \                 
+    -itd \
+    --rm \
+    -v ${PWD}:/app \
+    -v /app/node_modules \
+    -p 3001:3000 \
+    -e CHOKIDAR_USEPOLLING=true \
+    ml-frontend
+
+Run backend docker container
+
+    docker run -p 8000:8000 -d ml-backend
+
+
 ## Docker
 
 See all containers
