@@ -3,6 +3,16 @@ A docker-containerized web app that identifies offensive speech.
 
 ## Getting Started
 
+Start app
+
+    docker-compose up -d --force-recreate
+
+Stop app
+
+    docker-compose down
+
+====== Run individual containers ======
+
 Run frontend docker container
 
     docker run \                 
@@ -10,14 +20,15 @@ Run frontend docker container
     --rm \
     -v ${PWD}:/app \
     -v /app/node_modules \
-    -p 3001:3000 \
+    -p 3000:3000 \
     -e CHOKIDAR_USEPOLLING=true \
-    ml-frontend
+    frontend
 
 Run backend docker container
 
     docker run -p 8000:8000 -d ml-backend
 
+====== Run individual containers ======
 
 ## Docker
 
@@ -153,7 +164,7 @@ EXPOSE: specify port number that needs to be exposed
 CMD []:
 
 1. Java
-
+    ```
     # Use an image with the SDK for compilation
     FROM openjdk:8-jdk-alpine AS builder
     WORKDIR /out
@@ -167,9 +178,10 @@ CMD []:
     # Copy compiled artifacts from previous image
     COPY --from=builder /out/*.class .
     CMD ["java", "Hello"]
+    ```
 
 2. Node.js
-
+    ```
     FROM node:10-alpine
     # Create app directory
     RUN mkdir -p /usr/src/app
@@ -187,10 +199,10 @@ CMD []:
     EXPOSE 80
 
     CMD ["npm", "start"]
-
+    ```
 
 3. Python
-
+    ```
     FROM python:3.7-stretch
 
     # Install modules
@@ -206,7 +218,8 @@ CMD []:
     EXPOSE 5000
 
     CMD ["flask", "run", "--host=0.0.0.0"]
-
+    ```
+    
 ### Registry
 
 Publish an image
