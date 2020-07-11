@@ -1,0 +1,19 @@
+version: '3.0'
+services:
+    backend:
+        build: ./backend
+        command: python3 app.py
+        container_name: backend
+        ports: 
+            - 8000:8000
+        environment:
+            - DEBUG=True
+    
+    frontend:
+        build: ./frontend
+        container_name: frontend
+        ports: 
+            - 3000:3000
+        links:
+            - backend
+        stdin_open: true
