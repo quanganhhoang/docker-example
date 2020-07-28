@@ -21,6 +21,8 @@ from sklearn.tree import DecisionTreeClassifier
 
 from joblib import dump, load
 
+import logging
+
 
 # def load_model():
 #     """
@@ -98,6 +100,20 @@ def get_prediction(model, message: str):
     return class_to_name(pred[0])
 
 app = Flask(__name__)
+
+# Create a new handler for log messages that will send them to standard error
+handler = logging.StreamHandler()
+
+# Add a formatter that makes use of our new contextual information
+log_format = "%(asctime)s\t%(levelname)s\t%(user_id)s\t%(ip)s\t%(method)s\t%(url)s\t%(message)s"
+formatter = logging.Formatter(log_format)
+handler.setFormatter(formatter)
+
+logging.info('Logging to a file...')
+# Finally, attach the handler to our logger
+app.logger.addHandler(handler)
+
+
 CORS(app, resources={r'/predict': {"origins": "http://localhost:3000"}})
 api = Api(app)
 
@@ -114,7 +130,10 @@ class Predict(Resource):
         
         return get_prediction(model, input)
 
-model = load('model.joblib')
+try:
+    model = load('model.joblib')
+except:
+    logging.exception('ERROR: Failed to load model')
 
 
 api.add_resource(HelloWorld, '/')

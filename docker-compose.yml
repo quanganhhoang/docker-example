@@ -3,17 +3,29 @@ services:
     backend:
         build: ./backend
         command: python3 app.py
-        container_name: backend
+        container_name: ml-backend
         ports: 
             - 8000:8000
         environment:
             - DEBUG=True
+
+    db:
+        image: postgres:12-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=cs_6220
+            - POSTGRES_PASSWORD=cs_6220
+            - POSTGRES_DB=cs_6220
     
     frontend:
         build: ./frontend
-        container_name: frontend
+        container_name: ml-frontend
         ports: 
             - 3000:3000
         links:
             - backend
         stdin_open: true
+
+volumes:
+    postgres_data:
