@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
+from collections import defaultdict
 
 import nltk
 
@@ -16,9 +17,12 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC, LinearSVC
 from sklearn.metrics import classification_report, f1_score, accuracy_score, confusion_matrix
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.tree import DecisionTreeClassifier
 
+from scipy.sparse import hstack
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from imblearn.over_sampling import SMOTE
 from joblib import dump, load
 
 import logging
@@ -90,6 +94,25 @@ def preprocess(text: str):
     
     return parsed_text
 
+
+def tokenize(tweet):
+    stemmer = PorterStemmer()
+    tweet = " ".join(re.split("[^a-zA-Z]*", tweet.lower())).strip()
+    tokens = [stemmer.stem(t) for t in tweet.split()]
+    return tokens
+
+
+def getSentiment(df):
+    sentiment_analyzer = SentimentIntensityAnalyzer()
+    scores = defaultdict(list)
+    for i in range(len(df)):
+        score_dict = sentiment_analyzer.polarity_scores(df[i])
+        scores['neg'].append(score_dict['neg'])
+        scores['neu'].append(score_dict['neu'])
+        scores['pos'].append(score_dict['pos'])
+        scores['compound'].append(score_dict['compound'])
+    return np.array(pd.DataFrame(scores))
+
         
 def get_prediction(model, message: str):
     """
@@ -124,7 +147,6 @@ class HelloWorld(Resource):
 
 
 class Predict(Resource):
-    @cross_origin(origin='*', headers=['Content-Type','Authorization'])
     def get(self):
         input = request.args['input']
         

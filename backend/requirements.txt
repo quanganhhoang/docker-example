@@ -21,3 +21,5 @@ sklearn==0.0
 threadpoolctl==2.1.0
 tqdm==4.47.0
 Werkzeug==1.0.1
+vaderSentiment==3.3.2
+imbalanced-learn==0.7.0
