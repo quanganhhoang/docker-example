@@ -9,14 +9,14 @@ services:
         environment:
             - DEBUG=True
 
-    db:
-        image: postgres:12-alpine
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
-        environment:
-            - POSTGRES_USER=cs_6220
-            - POSTGRES_PASSWORD=cs_6220
-            - POSTGRES_DB=cs_6220
+    # db:
+    #     image: postgres:12-alpine
+    #     volumes:
+    #         - postgres_data:/var/lib/postgresql/data/
+    #     environment:
+    #         - POSTGRES_USER=cs_6220
+    #         - POSTGRES_PASSWORD=cs_6220
+    #         - POSTGRES_DB=cs_6220
     
     frontend:
         build: ./frontend
@@ -27,5 +27,5 @@ services:
             - backend
         stdin_open: true
 
-volumes:
-    postgres_data:
+# volumes:
+#     postgres_data:
