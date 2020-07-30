@@ -20,6 +20,7 @@ function App() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [tableResult, setTableResult] = useState(INITIAL_STATE);
     const [dropdownOption, setDropdownOption] = useState('Select hashtag');
+    const [isLoading, setIsLoading] = useState(false)
 
     const onTweetSubmit = (e) => {    
         e.preventDefault()
@@ -43,6 +44,7 @@ function App() {
 
     const handleDropdown = async (hashtag) => {
         setDropdownOption('#' + hashtag);
+        setIsLoading(true);
         let tweets;
         switch (hashtag) {
             case 'whitepower':
@@ -64,6 +66,7 @@ function App() {
             result[tweet] = res;
         }
         setTableResult(result);
+        setIsLoading(false);
     }
 
     return (
@@ -115,7 +118,8 @@ function App() {
                     </DropdownMenu>
                 </Dropdown>
                 <br></br>
-                <ResultTable data={tableResult}/>
+                
+                {isLoading ? <p>Loading...</p> : <ResultTable data={tableResult}/>}
             </div>
         </div>
     )
