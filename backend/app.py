@@ -68,6 +68,15 @@ def analyzer(doc: str):
     return [stemmer.stem(word) for word in filtered_words if word not in ['URLHERE', 'MENTIONHERE']]
 
 
+def tokenize_without_stemming(doc: str):
+    all_stopwords = generate_stopwords()
+    stemmer = PorterStemmer()
+    words = word_tokenize(doc)
+    filtered_words = [word for word in words if not word in all_stopwords and word.isalnum()]
+    
+    return [word for word in filtered_words if word not in ['URLHERE', 'MENTIONHERE']]
+
+
 def preprocess(text: str):
     """
     Preprocess text before feeding to model
@@ -149,8 +158,15 @@ class HelloWorld(Resource):
 class Predict(Resource):
     def get(self):
         input = request.args['input']
-        
-        return get_prediction(model, input)
+
+        parsed_tweet = preprocess(input)
+        words = tokenize_without_stemming(parsed_tweet)
+
+        res = {}
+        res['prediction'] = get_prediction(model, input)
+        res['words'] = words
+
+        return res
 
 try:
     model = load('model.joblib')

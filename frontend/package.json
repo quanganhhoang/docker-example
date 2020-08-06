@@ -10,10 +10,11 @@
     "bootstrap": "^4.5.0",
     "plotly.js": "^1.54.7",
     "plotly.js-basic-dist": "^1.54.7",
-    "react": "^16.13.1",
+    "react": "^16.13.0",
     "react-dom": "^16.13.1",
     "react-plotly.js": "^2.4.0",
     "react-scripts": "3.4.1",
+    "react-wordcloud": "^1.2.6",
     "reactstrap": "^8.5.1"
   },
   "scripts": {

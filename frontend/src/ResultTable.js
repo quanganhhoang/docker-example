@@ -8,7 +8,7 @@ function ResultTable(props) {
     
     for (const [key, value] of Object.entries(result)) {
         tableRows.push(
-            <tr>
+            <tr key={i}>
                 <th scope="row">{i++}</th>
                 <th>{key}</th>
                 <th>{value}</th>
@@ -21,9 +21,9 @@ function ResultTable(props) {
             <Table>
                 <thead>
                     <tr>
-                    <th>#</th>
-                    <th>Tweet</th>
-                    <th>Classification Result</th>
+                        <th>#</th>
+                        <th>Tweet</th>
+                        <th>Classification Result</th>
                     </tr>
                 </thead>
                 <tbody>
