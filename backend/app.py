@@ -28,13 +28,6 @@ from joblib import dump, load
 import logging
 
 
-# def load_model():
-#     """
-#     This function loads the hate speech ML model.
-#     """
-#     return load('model.joblib')
-
-
 def class_to_name(class_label):
     """
     This function is used to map a numeric
@@ -92,14 +85,6 @@ def preprocess(text: str):
     parsed_text = re.sub(symbol_regex, ' ', parsed_text)
     parsed_text = re.sub(url_regex, 'URLHERE', parsed_text)
     parsed_text = re.sub(mention_regex, 'MENTIONHERE', parsed_text)
-
-#     words = word_tokenize(parsed_tweet)
-    
-#     filtered_words = [word for word in words if not word in all_stopwords and word.isalnum()]
-#     porter = PorterStemmer()
-#     stemmed = [porter.stem(word) for word in filtered_words if word not in ['URLHERE', 'MENTIONHERE']]
-    
-#     pos = pos_tag(filtered_words)
     
     return parsed_text
 
